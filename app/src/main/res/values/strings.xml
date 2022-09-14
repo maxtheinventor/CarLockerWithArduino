@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CarLockerWithArduino</string>
+    <string name="yourDeviceDoesntSupportBluetooth">Your device doesnt support Bluetooth</string>
+    <string name="cantConnectToCar">Can\'t connect to car</string>
+</resources>

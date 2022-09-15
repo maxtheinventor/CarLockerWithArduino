@@ -1,4 +1,4 @@
-package com.example.carlockerwitharduino
+package com.example.carlockerwitharduino.util
 
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
@@ -15,9 +15,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import com.example.carlockerwitharduino.R
 import com.example.carlockerwitharduino.databinding.ActivityStablishConnectionWithArduinoBoardBinding
-import com.example.carlockerwitharduino.util.GlobalFunctions
-import com.example.carlockerwitharduino.util.ToastsUtil
 import java.io.IOException
 import java.util.*
 

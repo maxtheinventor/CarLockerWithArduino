@@ -28,9 +28,16 @@
         android:theme="@style/Theme.CarLockerWithArduino"
         tools:targetApi="31">
         <activity
+            android:name=".view.InfoToAddCar"
+            android:exported="false" />
+        <activity android:name=".view.AddCar"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".view.SplashScreen"
-            android:theme="@style/SplashTheme"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,12 +45,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EstablishConnectionWithArduinoBoard"
-            android:exported="false" />
+            android:name=".util.EstablishConnectionWithArduinoBoard"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

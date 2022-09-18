@@ -31,8 +31,9 @@
             android:name=".view.InfoToAddCar"
             android:exported="false" />
         <activity android:name=".view.AddCar"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="portrait"/>
+
         <activity
             android:name=".view.SplashScreen"
             android:exported="true"

@@ -13,4 +13,5 @@
     <string name="carNameTitle">CAR NAME</string>
     <string name="bluetoothMac">BLUETOOTH MAC</string>
     <string name="fieldCantBeEmpty">FIELD CAN\'T BE EMPTY</string>
+    <string name="fieldsCantBeEmpty">FIELDS CAN\'T BE EMPTY</string>
 </resources>

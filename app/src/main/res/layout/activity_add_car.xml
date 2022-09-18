@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="myViewModel"
+            type="com.example.carlockerwitharduino.view_model.CarRegisterViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,6 +56,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/carNameTitle"
+                    android:text="@={myViewModel.carName}"
                     android:inputType="textPersonName"
                     android:textColor="#000000"
                     android:textColorHint="@color/hint" />
@@ -83,7 +88,9 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/bluetoothMac"
+                    android:text="@={myViewModel.bluetoothMAC}"
                     android:inputType="textPersonName"
+                    android:textColor="#000000"
                     android:textColorHint="@color/hint" />
             </LinearLayout>
 

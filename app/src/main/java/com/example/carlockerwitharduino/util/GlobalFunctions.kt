@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.startActivity
 import com.example.carlockerwitharduino.MainActivity
 import com.example.carlockerwitharduino.R
+import com.example.carlockerwitharduino.view.CarControl
 
 class GlobalFunctions {
 
@@ -31,6 +32,10 @@ class GlobalFunctions {
 
             alertDialogBuilder.show()
 
+        }
+
+        fun takeUserToCarControl(context: Context) {
+            context.startActivity(Intent(context, MainActivity::class.java))
         }
 
     }

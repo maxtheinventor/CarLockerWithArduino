@@ -37,6 +37,10 @@ class AddCar : AppCompatActivity() {
         registerCarInDB()
         listenToDBActionsToasts()
 
+        viewModel.getAllCarRegister.observe(this, Observer {
+            println("El tamaño es: ${it.size}")
+        })
+
     }
 
     private fun registerCarInDB() {

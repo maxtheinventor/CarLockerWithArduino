@@ -5,56 +5,75 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.carlockerwitharduino.R
+import com.example.carlockerwitharduino.adapter.RegisteredCarsRVA
+import com.example.carlockerwitharduino.database.CarRegisterDatabase
+import com.example.carlockerwitharduino.databinding.FragmentRegisteredCarsBinding
+import com.example.carlockerwitharduino.factory.CarRegisterViewModelFactory
+import com.example.carlockerwitharduino.repository.CarRegisterRepository
+import com.example.carlockerwitharduino.view_model.CarConnectionViewModel
+import com.example.carlockerwitharduino.view_model.CarRegisterViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RegisteredCars.newInstance] factory method to
- * create an instance of this fragment.
- */
 class RegisteredCars : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentRegisteredCarsBinding
+    private lateinit var adapter: RegisteredCarsRVA
+    private lateinit var carRegisterViewModel: CarRegisterViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_registered_cars, container, false)
+
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_registered_cars,
+            container,
+            false
+        )
+
+        initCarRegisterViewModel()
+        initRecyclerView()
+
+        return binding.root
+
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RegisteredCars.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RegisteredCars().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun initCarRegisterViewModel() {
+
+        val dao = CarRegisterDatabase.getInstance(requireContext()).carRegisterDAO
+        val repository = CarRegisterRepository(dao)
+        val factory = CarRegisterViewModelFactory(repository)
+
+        carRegisterViewModel = ViewModelProvider(this, factory)[CarRegisterViewModel::class.java]
+
     }
+
+    private fun initRecyclerView() {
+
+        binding.apply {
+
+            registeredCarsRV.layoutManager = LinearLayoutManager(requireActivity())
+            adapter = RegisteredCarsRVA(requireActivity())
+            registeredCarsRV.adapter = adapter
+            displayRegisteredCarsList()
+
+        }
+
+    }
+
+    private fun displayRegisteredCarsList() {
+
+        carRegisterViewModel.getAllCarRegister.observe(requireActivity(), Observer {
+            adapter.setList(it)
+            adapter.notifyDataSetChanged()
+        })
+
+    }
+
 }

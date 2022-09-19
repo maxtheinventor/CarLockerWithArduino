@@ -36,19 +36,9 @@ class CarConnection : Fragment() {
             false
         )
 
-        //TODO: try to send this to a method
-        val dao = CarRegisterDatabase.getInstance(requireContext()).carRegisterDAO
-        val repository = CarRegisterRepository(dao)
-        val factory = CarRegisterViewModelFactory(repository)
-
-        carConnectionViewModel = ViewModelProvider(this)[CarConnectionViewModel::class.java]
-        carRegisterViewModel = ViewModelProvider(this, factory).get(CarRegisterViewModel::class.java)
-
-        carRegisterViewModel.getAllCarRegister.observe(requireActivity(), Observer {
-            println("El pinxe tamaño wey: ${it.size}")
-        })
-
-        startConnectionWithCar()
+        initCarConnectionViewModel()
+        initCarRegisterViewModel()
+        showStartConnectionWithCar()
         addCarToLocalDB()
 
         return binding.root
@@ -79,11 +69,60 @@ class CarConnection : Fragment() {
 
             addCarCC.setOnClickListener {
 
-                startActivity(Intent(requireContext(),InfoToAddCar::class.java))
+                startActivity(Intent(requireContext(), InfoToAddCar::class.java))
 
             }
 
         }
+
+    }
+
+    private fun initCarRegisterViewModel() {
+
+        val dao = CarRegisterDatabase.getInstance(requireContext()).carRegisterDAO
+        val repository = CarRegisterRepository(dao)
+        val factory = CarRegisterViewModelFactory(repository)
+
+        carRegisterViewModel = ViewModelProvider(this, factory)[CarRegisterViewModel::class.java]
+
+    }
+
+    private fun initCarConnectionViewModel() {
+
+        carConnectionViewModel = ViewModelProvider(this)[CarConnectionViewModel::class.java]
+
+    }
+
+    private fun showStartConnectionWithCar() {
+
+        carRegisterViewModel.getAllCarRegister.observe(
+            requireActivity(),
+            Observer { carRegisterList ->
+
+                if (carRegisterList.size > 0) {
+
+                    binding.apply {
+
+                        startStopCarConnectionCC.visibility = View.VISIBLE
+                        registerACarToContinueTitle.visibility = View.GONE
+                        startConnectionWithCar()
+
+                    }
+
+                } else {
+
+                    binding.apply {
+
+                        binding.registerACarToContinueTitle.visibility = View.VISIBLE
+                        binding.startStopCarConnectionCC.visibility = View.GONE
+
+                    }
+
+
+                }
+
+            })
+
 
     }
 

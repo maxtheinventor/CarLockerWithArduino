@@ -18,6 +18,7 @@
         <entry key="..\:/CarLockerWithArduino/app/src/main/res/layout/fragment_instructions_to_add_car.xml" value="0.5453125" />
         <entry key="..\:/CarLockerWithArduino/app/src/main/res/layout/fragment_locking_history.xml" value="0.30833333333333335" />
         <entry key="..\:/CarLockerWithArduino/app/src/main/res/layout/fragment_registered_cars.xml" value="0.3223958333333333" />
+        <entry key="..\:/CarLockerWithArduino/app/src/main/res/layout/registered_car_row.xml" value="0.33489583333333334" />
         <entry key="..\:/CarLockerWithArduino/app/src/main/res/menu/bottom_navigation.xml" value="0.3223958333333333" />
         <entry key="..\:/CarLockerWithArduino/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2915" />
       </map>

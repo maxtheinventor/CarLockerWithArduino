@@ -14,5 +14,11 @@
     <string name="bluetoothMac">BLUETOOTH MAC</string>
     <string name="fieldCantBeEmpty">FIELD CAN\'T BE EMPTY</string>
     <string name="fieldsCantBeEmpty">FIELDS CAN\'T BE EMPTY</string>
-    <string name="registerACarToContinue">Register a car to continue</string>
+    <string name="registerACarToConnectToIt">Register a car to connect to it</string>
+    <string name="noCarsRegisteredYet">No cars registered yet</string>
+    <string name="carNameTitle2">CAR NAME:</string>
+    <string name="bluetoothMac2">BLUETOOTH MAC:</string>
+    <string name="update">UPDATE</string>
+    <string name="cancel">CANCEL</string>
+    <string name="alertDeletingAllData">ALERT: DELETING ALL DATA</string>
 </resources>

@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
 
-        menuNavigationFragmentReplacement(CarConnection())
+        menuNavigationFragmentReplacement(CarConnectionAndControl())
         bottomNavigationFunctionality()
 
     }
@@ -27,10 +27,10 @@ class MainActivity : AppCompatActivity() {
 
             when(it.itemId) {
 
-                R.id.carControlBN -> menuNavigationFragmentReplacement(CarConnection())
+                R.id.controlCarBN -> menuNavigationFragmentReplacement(CarConnectionAndControl())
                 R.id.lockingHistoryBN -> menuNavigationFragmentReplacement(LockingHistory())
                 R.id.aboutBN -> menuNavigationFragmentReplacement(About())
-                R.id.registeredCars -> menuNavigationFragmentReplacement(RegisteredCars())
+                R.id.registeredCarsBN -> menuNavigationFragmentReplacement(RegisteredCars())
 
                 else -> {}
 

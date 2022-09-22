@@ -10,25 +10,24 @@
     <androidx.drawerlayout.widget.DrawerLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.CarConnection">
+        tools:context=".view.CarConnectionAndControl">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#000000">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/addCar_CC"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:src="@android:drawable/ic_input_add"
+            <ImageView
+                android:id="@+id/downArrow"
+                android:layout_width="73dp"
+                android:layout_height="106dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.8" />
+                app:layout_constraintVertical_bias="0.612"
+                app:srcCompat="@drawable/ic_baseline_arrow_downward_white_24" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/startStopCarConnection_CC"
@@ -59,19 +58,44 @@
 
             <TextView
                 android:id="@+id/registerACarToContinueTitle"
-                android:layout_width="306dp"
-                android:layout_height="46dp"
+                android:layout_width="366dp"
+                android:layout_height="79dp"
                 android:fontFamily="@font/alata"
                 android:gravity="center"
-                android:text="@string/registerACarToContinue"
+                android:text="@string/registerACarToConnectToIt"
                 android:textColor="#FFFFFF"
                 android:textSize="25sp"
                 android:textStyle="bold"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.465" />
+
+            <ImageView
+                android:id="@+id/connectViaBluetooth"
+                android:layout_width="121dp"
+                android:layout_height="94dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.37"
+                app:srcCompat="@drawable/ic_baseline_bluetooth_24" />
+
+            <ImageView
+                android:id="@+id/connectViaNFC"
+                android:layout_width="121dp"
+                android:layout_height="94dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.687"
+                app:srcCompat="@drawable/ic_baseline_nfc_24" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,18 +3,21 @@ package com.example.carlockerwitharduino.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.carlockerwitharduino.R
+import com.example.carlockerwitharduino.database.CarRegisterDatabase
 import com.example.carlockerwitharduino.databinding.RegisteredCarRowBinding
+import com.example.carlockerwitharduino.factory.CarRegisterViewModelFactory
 import com.example.carlockerwitharduino.model.CarRegister
+import com.example.carlockerwitharduino.repository.CarRegisterRepository
 import com.example.carlockerwitharduino.view.RegisteredCars
+import com.example.carlockerwitharduino.view_model.CarRegisterViewModel
 
-class RegisteredCarsRVA(context:Context) : RecyclerView.Adapter<MyViewHolder>() {
+class RegisteredCarsRVA(private val clickListener: (CarRegister, i:Int) -> Unit) : RecyclerView.Adapter<MyViewHolder>() {
 
     private val registeredCarsArrayList = ArrayList<CarRegister>()
-    private val context: Context = context
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -29,15 +32,7 @@ class RegisteredCarsRVA(context:Context) : RecyclerView.Adapter<MyViewHolder>() 
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        holder.bind(registeredCarsArrayList[position])
-
-        holder.binding.editRegisteredCar.setOnClickListener{
-            Toast.makeText(context,"oa",Toast.LENGTH_SHORT).show()
-        }
-
-        holder.binding.deleteRegisteredCar.setOnClickListener{
-            Toast.makeText(context,"aios",Toast.LENGTH_SHORT).show()
-        }
+        holder.bind(registeredCarsArrayList[position], clickListener)
 
     }
 
@@ -56,13 +51,20 @@ class RegisteredCarsRVA(context:Context) : RecyclerView.Adapter<MyViewHolder>() 
 
 class MyViewHolder(val binding: RegisteredCarRowBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(carRegister: CarRegister) {
+    fun bind(carRegister: CarRegister,clickListener: (CarRegister, i: Int) -> Unit) {
 
         binding.apply {
 
             carNameTextView.text = carRegister.carName
             bluetoothMacTextView.text = carRegister.carBluetoothMac
 
+            editRegisteredCar.setOnClickListener {
+                clickListener(carRegister,1)
+            }
+
+            deleteRegisteredCar.setOnClickListener {
+                clickListener(carRegister,2)
+            }
 
         }
 

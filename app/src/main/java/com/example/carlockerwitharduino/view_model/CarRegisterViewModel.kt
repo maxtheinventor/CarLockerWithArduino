@@ -84,7 +84,7 @@ class CarRegisterViewModel(private val repository: CarRegisterRepository) : View
 
         }
 
-    fun deleteAll(carRegister: CarRegister): Job =
+    fun deleteAll(): Job =
 
         viewModelScope.launch {
 

@@ -21,4 +21,10 @@
     <string name="update">UPDATE</string>
     <string name="cancel">CANCEL</string>
     <string name="alertDeletingAllData">ALERT: DELETING ALL DATA</string>
+    <string name="noUnLockingLogsForAnyCar">No un/locking logs for any car</string>
+    <string name="date2">Date:</string>
+    <string name="time2">Time:</string>
+    <string name="functionalityNotAvailableYet">FUNCTIONALITY NOT AVAILABLE YET</string>
+    <string name="developedByMJHF">Developed by --><b>    Max John Hindmarsh Falagan</b></string>
+    <string name="MTIInstagram">\@maxtheinventorofficial</string>
 </resources>

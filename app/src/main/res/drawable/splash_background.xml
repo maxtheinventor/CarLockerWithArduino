@@ -10,7 +10,7 @@
         android:right="40dp"
         android:left="40dp">
 
-        <bitmap android:src="@drawable/car"/>
+        <bitmap android:src="@drawable/max_the_inventor_logo"/>
 
     </item>
 

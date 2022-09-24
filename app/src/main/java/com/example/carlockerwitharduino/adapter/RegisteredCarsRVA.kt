@@ -10,14 +10,14 @@ import com.example.carlockerwitharduino.R
 import com.example.carlockerwitharduino.database.CarRegisterDatabase
 import com.example.carlockerwitharduino.databinding.RegisteredCarRowBinding
 import com.example.carlockerwitharduino.factory.CarRegisterViewModelFactory
-import com.example.carlockerwitharduino.model.CarRegister
+import com.example.carlockerwitharduino.model.CarRegisterModel
 import com.example.carlockerwitharduino.repository.CarRegisterRepository
 import com.example.carlockerwitharduino.view.RegisteredCars
 import com.example.carlockerwitharduino.view_model.CarRegisterViewModel
 
-class RegisteredCarsRVA(private val clickListener: (CarRegister, i:Int) -> Unit) : RecyclerView.Adapter<MyViewHolder>() {
+class RegisteredCarsRVA(private val clickListener: (CarRegisterModel, i:Int) -> Unit) : RecyclerView.Adapter<MyViewHolder>() {
 
-    private val registeredCarsArrayList = ArrayList<CarRegister>()
+    private val registeredCarsArrayList = ArrayList<CarRegisterModel>()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -40,10 +40,10 @@ class RegisteredCarsRVA(private val clickListener: (CarRegister, i:Int) -> Unit)
         return registeredCarsArrayList.size
     }
 
-    fun setList(carRegister: List<CarRegister>) {
+    fun setList(carRegisterModel: List<CarRegisterModel>) {
 
         registeredCarsArrayList.clear()
-        registeredCarsArrayList.addAll(carRegister)
+        registeredCarsArrayList.addAll(carRegisterModel)
 
     }
 
@@ -51,19 +51,19 @@ class RegisteredCarsRVA(private val clickListener: (CarRegister, i:Int) -> Unit)
 
 class MyViewHolder(val binding: RegisteredCarRowBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(carRegister: CarRegister,clickListener: (CarRegister, i: Int) -> Unit) {
+    fun bind(carRegisterModel: CarRegisterModel, clickListener: (CarRegisterModel, i: Int) -> Unit) {
 
         binding.apply {
 
-            carNameTextView.text = carRegister.carName
-            bluetoothMacTextView.text = carRegister.carBluetoothMac
+            carNameTextView.text = carRegisterModel.carName
+            bluetoothMacTextView.text = carRegisterModel.carBluetoothMac
 
             editRegisteredCar.setOnClickListener {
-                clickListener(carRegister,1)
+                clickListener(carRegisterModel,1)
             }
 
             deleteRegisteredCar.setOnClickListener {
-                clickListener(carRegister,2)
+                clickListener(carRegisterModel,2)
             }
 
         }

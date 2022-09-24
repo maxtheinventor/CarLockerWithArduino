@@ -2,16 +2,13 @@ package com.example.carlockerwitharduino.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.carlockerwitharduino.R
 import com.example.carlockerwitharduino.database.CarRegisterDatabase
 import com.example.carlockerwitharduino.databinding.ActivityAddCarBinding
-import com.example.carlockerwitharduino.databinding.ActivityInfoToAddCarBinding
 import com.example.carlockerwitharduino.factory.CarRegisterViewModelFactory
-import com.example.carlockerwitharduino.model.CarRegister
 import com.example.carlockerwitharduino.repository.CarRegisterRepository
 import com.example.carlockerwitharduino.util.ToastsUtil
 import com.example.carlockerwitharduino.view_model.CarRegisterViewModel

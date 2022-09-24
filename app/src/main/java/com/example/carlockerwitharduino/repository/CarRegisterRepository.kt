@@ -1,27 +1,27 @@
 package com.example.carlockerwitharduino.repository
 
 import com.example.carlockerwitharduino.dao.CarRegisterDAO
-import com.example.carlockerwitharduino.model.CarRegister
+import com.example.carlockerwitharduino.model.CarRegisterModel
 
 class CarRegisterRepository(private val dao: CarRegisterDAO) {
 
     val getAll = dao.getAllCarsInRegister()
 
-    suspend fun insert(carRegister: CarRegister): Long {
+    suspend fun insert(carRegisterModel: CarRegisterModel): Long {
 
-        return dao.insertCarInRegister(carRegister)
-
-    }
-
-    suspend fun update(carRegister: CarRegister) : Int {
-
-        return dao.updateCarInRegister(carRegister)
+        return dao.insertCarInRegister(carRegisterModel)
 
     }
 
-    suspend fun delete(carRegister: CarRegister) : Int {
+    suspend fun update(carRegisterModel: CarRegisterModel) : Int {
 
-        return dao.deleteCarInRegister(carRegister)
+        return dao.updateCarInRegister(carRegisterModel)
+
+    }
+
+    suspend fun delete(carRegisterModel: CarRegisterModel) : Int {
+
+        return dao.deleteCarInRegister(carRegisterModel)
 
     }
 

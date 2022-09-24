@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId) {
 
                 R.id.controlCarBN -> menuNavigationFragmentReplacement(CarConnectionAndControl())
-                R.id.lockingHistoryBN -> menuNavigationFragmentReplacement(LockingHistory())
+                R.id.unLockingLogBN -> menuNavigationFragmentReplacement(LockingHistory())
                 R.id.aboutBN -> menuNavigationFragmentReplacement(About())
                 R.id.registeredCarsBN -> menuNavigationFragmentReplacement(RegisteredCars())
 

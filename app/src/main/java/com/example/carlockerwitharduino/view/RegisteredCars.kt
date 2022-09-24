@@ -17,7 +17,7 @@ import com.example.carlockerwitharduino.adapter.RegisteredCarsRVA
 import com.example.carlockerwitharduino.database.CarRegisterDatabase
 import com.example.carlockerwitharduino.databinding.FragmentRegisteredCarsBinding
 import com.example.carlockerwitharduino.factory.CarRegisterViewModelFactory
-import com.example.carlockerwitharduino.model.CarRegister
+import com.example.carlockerwitharduino.model.CarRegisterModel
 import com.example.carlockerwitharduino.repository.CarRegisterRepository
 import com.example.carlockerwitharduino.util.ToastsUtil
 import com.example.carlockerwitharduino.view_model.CarRegisterViewModel
@@ -28,8 +28,8 @@ class RegisteredCars : Fragment() {
     private lateinit var binding: FragmentRegisteredCarsBinding
     private lateinit var adapter: RegisteredCarsRVA
     private lateinit var carRegisterViewModel: CarRegisterViewModel
-    private lateinit var carRegisterList: List<CarRegister>
-    private lateinit var carRegister: CarRegister
+    private lateinit var carRegisterModelList: List<CarRegisterModel>
+    private lateinit var carRegisterModel: CarRegisterModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +46,7 @@ class RegisteredCars : Fragment() {
         initCarRegisterViewModel()
         initRecyclerView()
         addCarToLocalDB()
-        deleteAllRegisteredCarsButtonFunctionallity()
+        deleteAllRegisteredCarsButtonFunctionality()
 
         return binding.root
 
@@ -67,7 +67,7 @@ class RegisteredCars : Fragment() {
         binding.apply {
 
             registeredCarsRV.layoutManager = LinearLayoutManager(requireActivity())
-            adapter = RegisteredCarsRVA { selectedItem: CarRegister, i: Int ->
+            adapter = RegisteredCarsRVA { selectedItem: CarRegisterModel, i: Int ->
                 deleteOrUpdateCarRegister(
                     selectedItem,
                     i
@@ -84,10 +84,11 @@ class RegisteredCars : Fragment() {
 
         carRegisterViewModel.getAllCarRegister.observe(requireActivity(), Observer {
 
-            carRegisterList = it
+            carRegisterModelList = it
             showHideNoRegisteredCarsText()
-            adapter.setList(carRegisterList)
+            adapter.setList(carRegisterModelList)
             adapter.notifyDataSetChanged()
+
         })
 
     }
@@ -96,12 +97,12 @@ class RegisteredCars : Fragment() {
 
         binding.apply {
 
-            if (carRegisterList.isEmpty()) {
+            if (carRegisterModelList.isEmpty()) {
 
                 registerACarToContinueTitle.visibility = View.VISIBLE
                 deleteAllRegisteredCars.visibility = View.GONE
 
-            } else if (carRegisterList.isNotEmpty()) {
+            } else if (carRegisterModelList.isNotEmpty()) {
 
                 registerACarToContinueTitle.visibility = View.GONE
                 deleteAllRegisteredCars.visibility = View.VISIBLE
@@ -124,9 +125,9 @@ class RegisteredCars : Fragment() {
 
     }
 
-    private fun deleteOrUpdateCarRegister(carRegister: CarRegister, selectedOption: Int) {
+    private fun deleteOrUpdateCarRegister(carRegisterModel: CarRegisterModel, selectedOption: Int) {
 
-        setCarRegisterValues(carRegister)
+        setCarRegisterValues(carRegisterModel)
 
         //Update
         if (selectedOption == 1) {
@@ -135,7 +136,7 @@ class RegisteredCars : Fragment() {
 
         //Delete
         else if (selectedOption == 2) {
-            carRegisterViewModel.delete(carRegister)
+            carRegisterViewModel.delete(carRegisterModel)
         }
 
     }
@@ -156,17 +157,17 @@ class RegisteredCars : Fragment() {
 
             setView(dialogLayout)
 
-            carNameEditText.setText(carRegister.carName)
-            bluetoothMacEditText.setText(carRegister.carBluetoothMac)
+            carNameEditText.setText(carRegisterModel.carName)
+            bluetoothMacEditText.setText(carRegisterModel.carBluetoothMac)
 
             setPositiveButton(R.string.update) { _, _ ->
 
                 if (carNameEditText.text.isNotEmpty() && bluetoothMacEditText.text.isNotEmpty()) {
 
-                    carRegister.carName = carNameEditText.text.toString()
-                    carRegister.carBluetoothMac = bluetoothMacEditText.text.toString()
+                    carRegisterModel.carName = carNameEditText.text.toString()
+                    carRegisterModel.carBluetoothMac = bluetoothMacEditText.text.toString()
 
-                    carRegisterViewModel.update(carRegister)
+                    carRegisterViewModel.update(carRegisterModel)
 
                 } else {
                     ToastsUtil.fieldsCantBeEmptyToContinue(requireContext())
@@ -186,13 +187,13 @@ class RegisteredCars : Fragment() {
 
     }
 
-    private fun setCarRegisterValues(carRegister: CarRegister) {
+    private fun setCarRegisterValues(carRegisterModel: CarRegisterModel) {
 
-        this.carRegister = carRegister
+        this.carRegisterModel = carRegisterModel
 
     }
 
-    private fun deleteAllRegisteredCarsButtonFunctionallity() {
+    private fun deleteAllRegisteredCarsButtonFunctionality() {
 
         binding.deleteAllRegisteredCars.setOnClickListener{
             deleteAllRegisteredCarsAlertDialog()

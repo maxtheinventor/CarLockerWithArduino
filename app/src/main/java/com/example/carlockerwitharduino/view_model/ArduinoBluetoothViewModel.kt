@@ -24,8 +24,8 @@ class ArduinoBluetoothViewModel : ViewModel() {
     private val _connectionStatus = MutableLiveData<Boolean>()
     private val _initialArduinoWriteStatus = MutableLiveData<Boolean>()
 
-    private val carName: LiveData<String> get() = _carName
-    private val bluetoothMac: LiveData<String> get() = _bluetoothMac
+    val carName: LiveData<String> get() = _carName
+    val bluetoothMac: LiveData<String> get() = _bluetoothMac
     val connectionStatus: LiveData<Boolean> get() = _connectionStatus
     val initialArduinoWriteStatus: LiveData<Boolean> get() = _initialArduinoWriteStatus
 
@@ -174,6 +174,21 @@ class ArduinoBluetoothViewModel : ViewModel() {
         writeData("a")
         if (receiveData() == "1") {
             _initialArduinoWriteStatus.value = true
+        }
+
+    }
+
+    fun openCar() {
+        writeData("o")
+        if (receiveData() == "2") {
+
+        }
+    }
+
+    fun closeCar() {
+        writeData("c")
+        if (receiveData() == "3") {
+
         }
     }
 

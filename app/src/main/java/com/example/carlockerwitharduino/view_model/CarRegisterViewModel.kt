@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.carlockerwitharduino.event.CarRegisterEvent
-import com.example.carlockerwitharduino.model.CarRegister
+import com.example.carlockerwitharduino.model.CarRegisterModel
 import com.example.carlockerwitharduino.repository.CarRegisterRepository
 import com.example.carlockerwitharduino.util.GlobalFunctions
 import kotlinx.coroutines.Job
@@ -19,26 +19,27 @@ class CarRegisterViewModel(private val repository: CarRegisterRepository) : View
     val carName = MutableLiveData<String>()
     val bluetoothMAC = MutableLiveData<String>()
 
-    private val statusMessage = MutableLiveData<CarRegisterEvent<String>>()
+    private val databaseStatusMessage = MutableLiveData<CarRegisterEvent<String>>()
 
     val message: LiveData<CarRegisterEvent<String>>
-        get() = statusMessage
+        get() = databaseStatusMessage
 
 
     fun insert(context: Context) {
 
         viewModelScope.launch {
 
-            val newRowID = repository.insert(CarRegister(0,carName.value!!,bluetoothMAC.value!!))
+            val newRowID = repository.insert(CarRegisterModel(0, carName.value!!, bluetoothMAC.value!!))
 
             if (newRowID > -1) {
 
-                statusMessage.value = CarRegisterEvent("Car registered successfully!")
+                databaseStatusMessage.value = CarRegisterEvent("Car registered successfully!")
                 GlobalFunctions.takeUserToCarControl(context)
 
             } else {
 
-                statusMessage.value = CarRegisterEvent("An error has occurred registering the car")
+                databaseStatusMessage.value =
+                    CarRegisterEvent("An error has occurred registering the car")
                 GlobalFunctions.takeUserToCarControl(context)
 
             }
@@ -47,38 +48,42 @@ class CarRegisterViewModel(private val repository: CarRegisterRepository) : View
 
     }
 
-    fun update(carRegister: CarRegister): Job =
+    fun update(carRegisterModel: CarRegisterModel): Job =
 
         viewModelScope.launch {
 
-            val numOfRowsUpdated = repository.update(carRegister)
+            val numOfRowsUpdated = repository.update(carRegisterModel)
 
             if (numOfRowsUpdated > -1) {
 
                 //TODO: See if I change the name that the new one appears
-                statusMessage.value = CarRegisterEvent("Data updated for: ${carRegister.carName}")
+                databaseStatusMessage.value =
+                    CarRegisterEvent("Data updated for: ${carRegisterModel.carName}")
 
             } else {
 
-                statusMessage.value = CarRegisterEvent("An error has occurred UPDATING the data ")
+                databaseStatusMessage.value =
+                    CarRegisterEvent("An error has occurred UPDATING the data ")
 
             }
 
         }
 
-    fun delete(carRegister: CarRegister): Job =
+    fun delete(carRegisterModel: CarRegisterModel): Job =
 
         viewModelScope.launch {
 
-            val numOfRowsDeleted = repository.delete(carRegister)
+            val numOfRowsDeleted = repository.delete(carRegisterModel)
 
             if (numOfRowsDeleted > 0) {
 
-                statusMessage.value = CarRegisterEvent("Car deleted from the register successfully")
+                databaseStatusMessage.value =
+                    CarRegisterEvent("Car deleted from the register successfully")
 
             } else {
 
-                statusMessage.value = CarRegisterEvent("An error has occurred deleting the data")
+                databaseStatusMessage.value =
+                    CarRegisterEvent("An error has occurred deleting the data")
 
             }
 
@@ -92,11 +97,12 @@ class CarRegisterViewModel(private val repository: CarRegisterRepository) : View
 
             if (allRowsDeletedOrNot > 0) {
 
-                statusMessage.value = CarRegisterEvent("All cars deleted from the register")
+                databaseStatusMessage.value = CarRegisterEvent("All cars deleted from the register")
 
             } else {
 
-                statusMessage.value = CarRegisterEvent("An error occurred deleting all data")
+                databaseStatusMessage.value =
+                    CarRegisterEvent("An error occurred deleting all data")
 
             }
 

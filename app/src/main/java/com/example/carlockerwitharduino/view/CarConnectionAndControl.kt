@@ -1,7 +1,7 @@
 package com.example.carlockerwitharduino.view
 
 import android.app.AlertDialog
-import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,10 +20,15 @@ import com.example.carlockerwitharduino.database.CarRegisterDatabase
 import com.example.carlockerwitharduino.factory.CarRegisterViewModelFactory
 import com.example.carlockerwitharduino.repository.CarRegisterRepository
 import com.example.carlockerwitharduino.bluetooth.PreEstablishBluetoothConnectionChecks
+import com.example.carlockerwitharduino.database.UnLockingLogDatabase
 import com.example.carlockerwitharduino.databinding.FragmentCarConnectionAndControlBinding
+import com.example.carlockerwitharduino.factory.UnLockingLogViewModelFactory
+import com.example.carlockerwitharduino.repository.UnLockingLogRepository
+import com.example.carlockerwitharduino.util.GlobalFunctions
 import com.example.carlockerwitharduino.view_model.ArduinoBluetoothViewModel
 import com.example.carlockerwitharduino.view_model.CarConnectionViewModel
 import com.example.carlockerwitharduino.view_model.CarRegisterViewModel
+import com.example.carlockerwitharduino.view_model.UnLockingLogViewModel
 
 
 class CarConnectionAndControl : Fragment() {
@@ -30,7 +37,10 @@ class CarConnectionAndControl : Fragment() {
     private lateinit var carConnectionViewModel: CarConnectionViewModel
     private lateinit var carRegisterViewModel: CarRegisterViewModel
     private lateinit var arduinoBluetoothViewModel: ArduinoBluetoothViewModel
+    private lateinit var unLockingLogViewModel: UnLockingLogViewModel
+    private var lockUnlockStatus: Boolean = false
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,14 +53,24 @@ class CarConnectionAndControl : Fragment() {
             false
         )
 
-        initCarConnectionViewModel()
-        initCarRegisterViewModel()
-        initArduinoBluetoothViewModel()
+        initViewModels()
         showStartConnectionWithCar()
         checkConnectionStatus()
         checkInitialArduinoWrite()
+        connectViaBluetoothButtonFunctionality()
+        connectViaNFCFunctionallity()
+        lockUnlockCar()
 
         return binding.root
+
+    }
+
+    private fun initViewModels() {
+
+        initCarConnectionViewModel()
+        initCarRegisterViewModel()
+        initArduinoBluetoothViewModel()
+        initUnLockingLogViewModel()
 
     }
 
@@ -100,8 +120,8 @@ class CarConnectionAndControl : Fragment() {
 
         arduinoBluetoothViewModel.initialArduinoWriteStatus.observe(viewLifecycleOwner, Observer {
 
-            if(it) {
-                showControlButtonsHideConnectionButtons()
+            if (it) {
+                showConnectViaHideConnectionButtons()
             }
 
         })
@@ -126,6 +146,16 @@ class CarConnectionAndControl : Fragment() {
         arduinoBluetoothViewModel = ViewModelProvider(this)[ArduinoBluetoothViewModel::class.java]
     }
 
+    private fun initUnLockingLogViewModel() {
+
+        val dao = UnLockingLogDatabase.getInstance(requireContext()).unLockingDAO
+        val repository = UnLockingLogRepository(dao)
+        val factory = UnLockingLogViewModelFactory(repository)
+
+        unLockingLogViewModel = ViewModelProvider(this, factory)[UnLockingLogViewModel::class.java]
+
+    }
+
     private fun showStartConnectionWithCar() {
 
         carRegisterViewModel.getAllCarRegister.observe(
@@ -138,7 +168,6 @@ class CarConnectionAndControl : Fragment() {
 
                         startStopCarConnectionCC.visibility = View.VISIBLE
                         registerACarToContinueTitle.visibility = View.GONE
-                        downArrow.visibility = View.GONE
                         startConnectionWithCar()
 
                     }
@@ -148,7 +177,6 @@ class CarConnectionAndControl : Fragment() {
                     binding.apply {
 
                         binding.registerACarToContinueTitle.visibility = View.VISIBLE
-                        downArrow.visibility = View.VISIBLE
                         binding.startStopCarConnectionCC.visibility = View.GONE
 
                     }
@@ -249,7 +277,7 @@ class CarConnectionAndControl : Fragment() {
 
     }
 
-    private fun showControlButtonsHideConnectionButtons() {
+    private fun showConnectViaHideConnectionButtons() {
 
         binding.apply {
 
@@ -258,6 +286,108 @@ class CarConnectionAndControl : Fragment() {
             connectViaNFC.visibility = View.VISIBLE
 
         }
+
+    }
+
+    private fun connectViaBluetoothButtonFunctionality() {
+
+        binding.apply {
+
+            connectViaBluetooth.setOnClickListener {
+                hideConnectViaButtons()
+                showLockUnlockCarButton()
+            }
+
+        }
+
+    }
+
+    private fun connectViaNFCFunctionallity() {
+
+        binding.apply {
+
+            connectViaNFC.setOnClickListener {
+                GlobalFunctions.nfcFunctionalityNotAvailableYet(requireContext())
+            }
+
+        }
+
+    }
+
+    private fun hideConnectViaButtons() {
+
+        binding.apply {
+
+            connectViaBluetooth.visibility = View.GONE
+            connectViaNFC.visibility = View.GONE
+
+        }
+
+    }
+
+    private fun showLockUnlockCarButton() {
+        binding.lockUnlockCar.visibility = View.VISIBLE
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun lockUnlockCar() {
+
+        binding.apply {
+
+            lockUnlockCar.setOnClickListener {
+
+                if (!lockUnlockStatus) {
+
+                    setUnLockingLogValues(false)
+                    arduinoBluetoothViewModel.openCar()
+                    unLockingLogViewModel.insert(requireContext())
+                    changeLockUnlockCarImageToOpen()
+                    lockUnlockStatus = true
+
+                } else {
+
+                    setUnLockingLogValues(true)
+                    arduinoBluetoothViewModel.closeCar()
+                    unLockingLogViewModel.insert(requireContext())
+                    changeLockUnlockCarImageToClosed()
+                    lockUnlockStatus = false
+
+                }
+
+
+            }
+
+        }
+
+    }
+
+    private fun changeLockUnlockCarImageToOpen() {
+
+        binding.lockUnlockCar.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_baseline_lock_open_24
+            )
+        )
+
+    }
+
+    private fun changeLockUnlockCarImageToClosed() {
+
+        binding.lockUnlockCar.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_baseline_lock_24
+            )
+        )
+
+    }
+
+    private fun setUnLockingLogValues(isLock: Boolean) {
+
+        unLockingLogViewModel.setCarName(arduinoBluetoothViewModel.carName.value!!)
+        unLockingLogViewModel.setBluetoothMac(arduinoBluetoothViewModel.bluetoothMac.value!!)
+        unLockingLogViewModel.setIsLock(isLock)
 
     }
 
